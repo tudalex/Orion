@@ -153,15 +153,7 @@ install(FILES
     DESTINATION include/attica COMPONENT Devel
 )
 
-# Install package config file
-if(NOT WIN32)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/libattica.pc.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/libattica.pc
-    )
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libattica.pc
-        DESTINATION ${LIB_DESTINATION}/pkgconfig
-    )
-endif(NOT WIN32)
+
 
 # Add the optional subdirectory with unit tests
 if (ATTICA_ENABLE_TESTS)
