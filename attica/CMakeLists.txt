@@ -98,62 +98,6 @@ add_library(attica STATIC ${ocsclient_SRCS})
 target_link_libraries(attica ${QT_QTCORE_LIBRARY} ${QT_QTNETWORK_LIBRARY})
 
 
-install(TARGETS attica ARCHIVE DESTINATION ${LIB_DESTINATION}
-                               LIBRARY DESTINATION ${LIB_DESTINATION}
-                               RUNTIME DESTINATION bin)
-
-install(FILES
-    activity.h
-    accountbalance.h
-    achievement.h
-    atticabasejob.h
-    atticaclient_export.h
-    atticautils.h
-    comment.h
-    commentparser.h
-    content.h
-    category.h
-    deletejob.h
-    distribution.h
-    distributionparser.h
-    downloaddescription.h
-    downloaditem.h
-    event.h
-    folder.h
-    forum.h
-    getjob.h
-    homepageentry.h
-    homepagetype.h
-    homepagetypeparser.h
-    icon.h
-    itemjob.h
-    knowledgebaseentry.h
-    listjob.h
-    license.h
-    message.h
-    metadata.h
-    person.h
-    #interface for external platform plugins
-    platformdependent.h
-    platformdependent_v2.h
-    privatedata.h
-    postjob.h
-    project.h
-    putjob.h
-    remoteaccount.h
-    buildservice.h
-    buildservicejob.h
-    buildservicejoboutput.h
-    providermanager.h
-    provider.h
-    publisher.h
-    publisherfield.h
-    topic.h
-    ${CMAKE_CURRENT_BINARY_DIR}/version.h
-    DESTINATION include/attica COMPONENT Devel
-)
-
-
 
 # Add the optional subdirectory with unit tests
 if (ATTICA_ENABLE_TESTS)
