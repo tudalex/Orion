@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     m_textEdit = new QTextEdit();
     m_textEdit->setPlainText(QString::fromAscii("test"));
-    m_textEdit->show();
+    this->setCentralWidget(m_textEdit);
 
     connect(&m_manager, SIGNAL(defaultProvidersLoaded()), SLOT(providersChanged()));
     // tell it to get the default Providers
