@@ -22,15 +22,17 @@ void MainWindow::providersChanged()
 {
     qDebug("provider has changed");
     if (!m_manager.providers().isEmpty()) {
-        m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("http://api.opendesktop.org/v1/")));
+        qDebug("provider list is not empty");
+        m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("https://api.opendesktop.org/v1/")));
         if (!m_provider.isValid()) {
-
+            qDebug("provider is not valid");
             return;
         }
+        Attica::ItemJob<Attica::Person>* job = m_provider.requestPerson(QString::fromAscii("fregl"));
+        connect(job, SIGNAL(finished(Attica::BaseJob*)), SLOT(onContentRecieved(Attica::BaseJob*)));
+        job->start();
     }
-    Attica::ItemJob<Attica::Person>* job = m_provider.requestPerson(QString::fromAscii("fregl"));
-    connect(job, SIGNAL(finished(Attica::BaseJob*)), SLOT(onContentRecieved(Attica::BaseJob*)));
-    job->start();
+
 }
 
 void MainWindow::onContentRecieved(Attica::BaseJob *job)
