@@ -7,7 +7,7 @@
 #include <QVBoxLayout>
 #include <attica/provider.h>
 #include <attica/providermanager.h>
-
+#include <QListWidget>
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -24,7 +24,7 @@ public slots:
 private:
     Attica::Provider m_provider;
     Attica::ProviderManager m_manager;
-    QTextEdit * m_textEdit;
+    QListWidget * m_SoftwareList;
     QVBoxLayout *m_categories;
 
 

@@ -9,16 +9,18 @@
 #include "categorybutton.h"
 #include <attica/category.h>
 #include <attica/content.h>
-
+#include <QListWidget>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+    this->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding);
+    this->setMinimumWidth(600);
     QHBoxLayout *hbox = new QHBoxLayout;
     m_categories = new QVBoxLayout;
     hbox->addLayout(m_categories);
-    m_textEdit = new QTextEdit();
-    m_textEdit->setPlainText(QString::fromAscii("test"));
-    hbox->addWidget(m_textEdit);
+    m_SoftwareList = new QListWidget;
+
+    hbox->addWidget(m_SoftwareList);
     QWidget *center = new QWidget;
     center->setLayout(hbox);
     this->setCentralWidget(center);
@@ -95,10 +97,11 @@ void MainWindow::onContentRecieved(Attica::BaseJob *job)
 void MainWindow::category_selected()
 {
     CategoryButton *test =static_cast < CategoryButton *>(QObject::sender());
-    m_textEdit->setPlainText(test->category->name());
+
     QList <Attica::Category> list;
     list.append(*(test->category));
     Attica::ListJob<Attica::Content>* job = m_provider.searchContents(list);
+    m_SoftwareList->clear();
     connect(job, SIGNAL(finished(Attica::BaseJob*)), SLOT(onContentListRecieved(Attica::BaseJob*)));
     job->start();
 }
@@ -112,10 +115,9 @@ void MainWindow::onContentListRecieved(Attica::BaseJob *job)
         Attica::Content::List l(ContentListJob->itemList());
         for (Attica::Content::List::iterator it = l.begin(); it!=l.end(); ++ it)
         {
-            clist.append((static_cast < Attica::Content> (*it)).name());
-            clist.append(QChar::fromAscii('\n'));
+            m_SoftwareList->addItem((static_cast < Attica::Content> (*it)).name());
         }
-        m_textEdit->setPlainText(clist);
+
     }
 }
 
