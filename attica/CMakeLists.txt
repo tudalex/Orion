@@ -96,12 +96,4 @@ add_library(attica STATIC ${ocsclient_SRCS})
 #)
 
 target_link_libraries(attica ${QT_QTCORE_LIBRARY} ${QT_QTNETWORK_LIBRARY})
-
-
-
-# Add the optional subdirectory with unit tests
-if (ATTICA_ENABLE_TESTS)
-    add_subdirectory(tests)
-endif (ATTICA_ENABLE_TESTS)
-
 set(ATTICA_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})

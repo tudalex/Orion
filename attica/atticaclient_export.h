@@ -23,15 +23,5 @@
 #define ATTICACLIENT_EXPORT_H
 
 #include <QtCore/QtGlobal>
-
-#ifndef ATTICA_EXPORT
-# if defined(ATTICA_LIB_MAKEDLL)
-   /* We are building this library */
-#  define ATTICA_EXPORT Q_DECL_EXPORT
-# else
-   /* We are using this library */
-#  define ATTICA_EXPORT Q_DECL_IMPORT
-# endif
-#endif
-
+#define ATTICA_EXPORT
 #endif
