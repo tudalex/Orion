@@ -9,8 +9,8 @@ add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
 add_subdirectory(attica)
 
-set(testSRCS main.cpp mainwindow.cpp)
-set(testHDRS mainwindow.h)
+set(testSRCS main.cpp mainwindow.cpp categorybutton.cpp)
+set(testHDRS mainwindow.h categorybutton.h)
 QT4_WRAP_CPP(test_MOC_SRCS ${testHDRS})
 find_package(Qt4 REQUIRED)
 

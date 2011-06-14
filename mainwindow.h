@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include <QTextEdit>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <attica/provider.h>
 #include <attica/providermanager.h>
-
+#include <QListWidget>
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -17,10 +19,14 @@ signals:
 public slots:
     void providersChanged();
     void onContentRecieved(Attica::BaseJob*);
+    void category_selected();
+    void onContentListRecieved(Attica::BaseJob*);
 private:
     Attica::Provider m_provider;
     Attica::ProviderManager m_manager;
-    QTextEdit * m_textEdit;
+    QListWidget * m_SoftwareList;
+    QVBoxLayout *m_categories;
+
 
 };
 
