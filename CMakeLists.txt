@@ -24,8 +24,8 @@ endif (ATTICA_ENABLE_TESTS)
 
 add_subdirectory(attica)
 
-set(testSRCS main.cpp mainwindow.cpp)
-set(testHDRS mainwindow.h)
+set(testSRCS main.cpp mainwindow.cpp categorybutton.cpp)
+set(testHDRS mainwindow.h categorybutton.h)
 QT4_WRAP_CPP(test_MOC_SRCS ${testHDRS})
 find_package(Qt4 REQUIRED)
 include_directories( ${QT_INCLUDES} )
