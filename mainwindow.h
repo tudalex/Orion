@@ -21,6 +21,7 @@ public slots:
     void onContentRecieved(Attica::BaseJob*);
     void category_selected();
     void onContentListRecieved(Attica::BaseJob*);
+    void softwareSelected(QListWidgetItem*);
 private:
     Attica::Provider m_provider;
     Attica::ProviderManager m_manager;

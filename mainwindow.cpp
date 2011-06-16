@@ -7,9 +7,12 @@
 #include <QHBoxLayout>
 #include <QCommandLinkButton>
 #include "categorybutton.h"
+#include "softwareitem.h"
 #include <attica/category.h>
 #include <attica/content.h>
 #include <QListWidget>
+#include <QDebug>
+#include <attica/downloaditem.h>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -26,13 +29,31 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(center);
     QCommandLinkButton *test = new QCommandLinkButton(QString::fromLatin1("buton de test"));
     //categories->addWidget(test);
-
+    connect(m_SoftwareList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(softwareSelected(QListWidgetItem*)));
     connect(&m_manager, SIGNAL(defaultProvidersLoaded()), SLOT(providersChanged()));
     // tell it to get the default Providers
     m_manager.addProviderFromXml(QString::fromLatin1("<provider>"
                                  "<id>opendesktop</id>"
-                                 "<location>https://api.opendesktop.org/v1/</location>"
+                                 "<location>http://api.opendesktop.org/v1/</location>"
                                  "<name>openDesktop.org</name>"
+                                 "<icon></icon>"
+                                 "<termsofuse>https://opendesktop.org/terms/</termsofuse>"
+                                 "<register>https://opendesktop.org/usermanager/new.php</register>"
+                                 "<services>"
+                                 "  <person ocsversion=\"1.3\" />"
+                                 "  <friend ocsversion=\"1.3\" />"
+                                 "  <message ocsversion=\"1.3\" />"
+                                 "  <activity ocsversion=\"1.3\" />"
+                                 "  <content ocsversion=\"1.3\" />"
+                                 "  <fan ocsversion=\"1.3\" />"
+                                 "  <knowledgebase ocsversion=\"1.3\" />"
+                                 "  <event ocsversion=\"1.3\" />"
+                                 "</services>"
+                                 "</provider>"));
+    m_manager.addProviderFromXml(QString::fromLatin1("<provider>"
+                                 "<id>opendesktop</id>"
+                                 "<location>http://ec2-46-51-134-160.eu-west-1.compute.amazonaws.com/ocs/</location>"
+                                 "<name>Kde Windows Test</name>"
                                  "<icon></icon>"
                                  "<termsofuse>https://opendesktop.org/terms/</termsofuse>"
                                  "<register>https://opendesktop.org/usermanager/new.php</register>"
@@ -56,7 +77,8 @@ void MainWindow::providersChanged()
     qDebug("provider has changed");
     if (!m_manager.providers().isEmpty()) {
         qDebug("provider list is not empty");
-        m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("https://api.opendesktop.org/v1/")));
+        m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("http://ec2-46-51-134-160.eu-west-1.compute.amazonaws.com/ocs/")));
+      //  m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("http://api.opendesktop.org/v1/")));
         if (!m_provider.isValid()) {
             qDebug("provider is not valid");
             return;
@@ -115,9 +137,43 @@ void MainWindow::onContentListRecieved(Attica::BaseJob *job)
         Attica::Content::List l(ContentListJob->itemList());
         for (Attica::Content::List::iterator it = l.begin(); it!=l.end(); ++ it)
         {
-            m_SoftwareList->addItem((static_cast < Attica::Content> (*it)).name());
+            Attica::Content *temp_content = new Attica::Content(static_cast < Attica::Content> (*it));
+            m_SoftwareList->addItem( new SoftwareItem(temp_content ));
         }
 
+    }
+
+}
+void MainWindow::softwareSelected(QListWidgetItem* item)
+{
+    SoftwareItem *sitem = static_cast < SoftwareItem *> (item);
+    qDebug("reached here");
+    Attica::Content *content = sitem->getContent();
+    qDebug("got content");
+    if (content == NULL)
+            qDebug("content is NULL");
+    else
+    {
+        qDebug()<<"should now install software named:"<<content->name()<<endl;
+        qDebug()<<"software has "<<content->downloadUrlDescriptions().count()<<" instalation methods";
+        int i=0;
+        for (QList<Attica::DownloadDescription>::iterator it = content->downloadUrlDescriptions().begin(); it !=content->downloadUrlDescriptions().end(); ++ it, ++i)
+        {
+            qDebug("entered the description loop");
+            Attica::DownloadDescription down = *it;
+            qDebug()<<"Download "<<i;
+            qDebug()<<"type is "<<down.type();
+            //if (down.type()==down.PackageDownload)
+            //{
+                qDebug("it is a package");
+                qDebug()<<" and a package "<<down.packageName();
+                qDebug()<<" from repo "<<down.repository();
+            //}
+            //else
+                //qDebug()<<" a link "<<down.link();
+            qDebug()<<endl;
+
+        }
     }
 }
 
