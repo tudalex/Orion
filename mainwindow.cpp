@@ -13,6 +13,7 @@
 #include <QListWidget>
 #include <QDebug>
 #include <attica/downloaditem.h>
+#include <QWebView>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -77,8 +78,8 @@ void MainWindow::providersChanged()
     qDebug("provider has changed");
     if (!m_manager.providers().isEmpty()) {
         qDebug("provider list is not empty");
-        m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("http://ec2-46-51-134-160.eu-west-1.compute.amazonaws.com/ocs/")));
-      //  m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("http://api.opendesktop.org/v1/")));
+      //  m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("http://ec2-46-51-134-160.eu-west-1.compute.amazonaws.com/ocs/")));
+        m_provider = m_manager.providerByUrl(QUrl(QString::fromAscii("http://api.opendesktop.org/v1/")));
         if (!m_provider.isValid()) {
             qDebug("provider is not valid");
             return;
@@ -156,25 +157,25 @@ void MainWindow::softwareSelected(QListWidgetItem* item)
     {
         qDebug()<<"should now install software named:"<<content->name()<<endl;
         qDebug()<<"software has "<<content->downloadUrlDescriptions().count()<<" instalation methods";
-        int i=0;
-        for (QList<Attica::DownloadDescription>::iterator it = content->downloadUrlDescriptions().begin(); it !=content->downloadUrlDescriptions().end(); ++ it, ++i)
+        int n= content->downloadUrlDescriptions().count();
+        for (int i = 0; i < n ; ++i)
         {
-            qDebug("entered the description loop");
-            Attica::DownloadDescription down = *it;
-            qDebug()<<"Download "<<i;
+            Attica::DownloadDescription down = content->downloadUrlDescription(i+1);
+            qDebug()<<"Download "<<down.name();
+
             qDebug()<<"type is "<<down.type();
-            //if (down.type()==down.PackageDownload)
-            //{
-                qDebug("it is a package");
-                qDebug()<<" and a package "<<down.packageName();
-                qDebug()<<" from repo "<<down.repository();
-            //}
-            //else
-                //qDebug()<<" a link "<<down.link();
+
+            qDebug()<<" and a package "<<down.packageName();
+            qDebug()<<" from repo "<<down.repository();
+
+            qDebug()<<" a link "<<down.link();
             qDebug()<<endl;
 
         }
     }
+    QWebView *test = new QWebView;
+    test->setUrl(content->detailpage());
+    test->show();
 }
 
 

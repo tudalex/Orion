@@ -1,10 +1,15 @@
 #include "softwareitem.h"
-
+#include <attica/icon.h>
 SoftwareItem::SoftwareItem( Attica::Content *content)
 {
     this->setText(content->name());
     //this->setIcon(QIcon::addFile(content->icons()));
     this->m_content = content;
+    if (!content->icons().empty())
+    {
+        Attica::Icon icon = content->icons().first();
+        this->setIcon(QIcon(icon.url().toString()));
+    }
 }
 Attica::Content * SoftwareItem::getContent()
 {
